@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import { login } from './auth';
 import { importKV2Secrets } from './kv';
+import { AuthMethods, Input, KV, SecretsEngines } from './types';
 
 const loadYaml = (name: string, options?: core.InputOptions | undefined) => {
   const rawValue = core.getInput(name, options);
@@ -28,20 +29,19 @@ async function run() {
     const url = core.getInput('url', { required: true });
     const token = core.getInput('token', { required: true });
     const secrets = loadYaml('secrets', {
-      required: true
-    }) as VaultAction.Input.Secrets;
+      required: true,
+    }) as Input.Secrets;
     const namespace = core.getInput('namespace', { required: false });
-    const authMethod = VaultAction.AuthMethods.github; // TODO - Support other auth methods
-    const secretsEngine: VaultAction.Input.SecretsEngine =
-      loadYaml('secretEngine', { required: false }) || {
-        name: VaultAction.SecretsEngines.KV,
-        config: {
-          path: '/kv',
-          version: 2,
-        } as VaultAction.KV.Config,
-      };
+    const authMethod = AuthMethods.github; // TODO - Support other auth methods
+    const secretsEngine: Input.SecretsEngine = loadYaml('secretEngine', { required: false }) || {
+      name: SecretsEngines.KV,
+      config: {
+        path: '/kv',
+        version: 2,
+      } as KV.Config,
+    };
 
-    if (secretsEngine.name !== VaultAction.SecretsEngines.KV) {
+    if (secretsEngine.name !== SecretsEngines.KV) {
       // TODO - Support other secret engines
       throw new Error(`Unsupported secret engine: ${secretsEngine}`);
     } else if (secretsEngine.config.version !== 2) {
@@ -65,12 +65,10 @@ async function run() {
       login(vaultClient(`${url}/v1/auth`, headers), authMethod, token),
     );
     headers['X-Vault-Token'] = vaultToken;
-    const { path, version } = secretsEngine.config;
     await core.group(`Retrieve Vault Secrets using ${secretsEngine.name} engine`, () =>
       importKV2Secrets(
-        vaultClient(`${url}/v1${path}/${version}`, headers),
+        vaultClient(`${url}/v1${secretsEngine.config.path}`, headers),
         secrets,
-        vaultToken,
       ),
     );
   } catch (error) {
