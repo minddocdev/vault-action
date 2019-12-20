@@ -1,0 +1,34 @@
+name: 'Vault'
+description: 'HashiCorp Vault secrets management'
+author: 'MindDoc GmbH'
+inputs:
+  url:
+    description: 'The Vault API url'
+    required: true
+  token:
+    description: 'The Github Token to be used to authenticate with Vault'
+    required: true
+  secrets:
+    description: '
+      A YAML formatted string with the list of secret request.
+      See README for more details.
+    '
+    required: true
+  namespace:
+    description: 'The isolated Vault environment (only in Vault Enterprise)'
+    required: false
+  secretsEngine:
+    description: '
+      A YAML formatted string with the secrets engine name and its configuration.
+      It will be use for operations with secrets.
+      Only KV2 is supported.
+      Defaults to KV2 engine with /kv as mounted path.
+      See README for more details.
+    '
+    required: false
+runs:
+  using: 'node12'
+  main: 'lib/main.js'
+branding:
+  icon: 'unlock'
+  color: 'green'

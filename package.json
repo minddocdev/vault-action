@@ -1,0 +1,39 @@
+{
+  "name": "vault-action",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Hashicorp Vault secrets management Github action",
+  "main": "lib/main.js",
+  "scripts": {
+    "build": "tsc",
+    "lint": "tslint --project .",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/minddocdev/vault-action.git"
+  },
+  "keywords": [
+    "actions",
+    "node",
+    "setup"
+  ],
+  "author": "MindDoc GmbH",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.2.0",
+    "axios": "^0.19.0",
+    "js-yaml": "^3.13.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.23",
+    "@types/js-yaml": "^3.12.1",
+    "@types/node": "^12.12.14",
+    "jest": "^24.8.0",
+    "jest-circus": "^24.7.1",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.20.1",
+    "tslint-config-airbnb": "^5.11.2",
+    "typescript": "^3.5.1"
+  }
+}
