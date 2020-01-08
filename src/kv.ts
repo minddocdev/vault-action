@@ -2,6 +2,7 @@ import { AxiosInstance } from 'axios';
 import * as core from '@actions/core';
 import * as command from '@actions/core/lib/command';
 import * as fs from 'fs';
+import * as yaml from 'js-yaml';
 
 import { Input } from './types';
 
@@ -21,7 +22,9 @@ export async function importKV2Secrets(
       core.debug(`✔ ${path} => ${env}`);
     }
     if (file) {
-      const value = res.data.data.data.file;
+      const value = yaml.safeDump(
+        res.data.data.data.file, { skipInvalid: true },
+      ).replace(/^\|+|\|+$/g, '');
       fs.writeFileSync(file, value);
     }
   });
