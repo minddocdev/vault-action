@@ -1,6 +1,9 @@
 name: 'Vault'
 description: 'HashiCorp Vault secrets management'
 author: 'MindDoc GmbH'
+branding:
+  icon: 'unlock'
+  color: 'green'
 inputs:
   url:
     description: 'The Vault API url'
@@ -27,8 +30,5 @@ inputs:
     '
     required: false
 runs:
-  using: 'node12'
-  main: 'lib/main.js'
-branding:
-  icon: 'unlock'
-  color: 'green'
+  using: 'docker'
+  image: 'Dockerfile'
