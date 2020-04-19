@@ -17,6 +17,7 @@ export namespace KV {
     key: string;
     env?: string;
     file?: string;
+    unmask?: boolean;
   }
 }
 
