@@ -18,7 +18,7 @@ export async function importKV2Secrets(
       // Export secret as environment variable
       if (!unmask) {
         // Mask all lines by default
-        value.split('\n').forEach(line => command.issue('add-mask', line));
+        value.split('\n').forEach((line) => command.issue('add-mask', line));
       }
       core.exportVariable(env, value);
       core.debug(`✔ ${path} => ${env}`);
